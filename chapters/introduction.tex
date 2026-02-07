@@ -1,0 +1,86 @@
+%----------------------------------------------------------------------------
+\chapter{Introduction}
+\label{chap:introduction}
+%----------------------------------------------------------------------------
+
+Human emotions play a fundamental role in communication, decision-making, and social interaction. The ability to recognize and understand emotional states has significant implications across numerous domains, from healthcare and education to user experience research and entertainment. As video content becomes increasingly prevalent in our digital world, the automated analysis of facial expressions in video recordings has emerged as a valuable capability with wide-ranging applications.
+
+%----------------------------------------------------------------------------
+\section{Motivation and Problem Context}
+\label{sec:motivation}
+%----------------------------------------------------------------------------
+
+The recognition of human emotions from facial expressions has been a subject of scientific inquiry since the pioneering work of Paul Ekman in the 1970s \cite{ekman1971constants}. Ekman's research established that certain basic emotions---happiness, sadness, anger, fear, disgust, and surprise---are universally expressed and recognized across cultures. This foundational work has enabled the development of computational systems capable of automatically detecting these emotional states from facial images and video.
+
+In recent years, the demand for automated emotion analysis has grown substantially across various sectors:
+
+\begin{itemize}
+    \item \textbf{User Experience Research}: UX professionals analyze user reactions to products, interfaces, and advertisements to understand emotional engagement and identify pain points in user journeys.
+
+    \item \textbf{Education}: Educators and researchers study student engagement and emotional responses during learning activities to improve teaching methods and educational content.
+
+    \item \textbf{Healthcare}: Mental health professionals can benefit from objective tools that help track emotional patterns in patients, supplementing traditional assessment methods.
+
+    \item \textbf{Media and Entertainment}: Content creators analyze audience reactions to optimize emotional impact and engagement in films, advertisements, and interactive media.
+
+    \item \textbf{Human-Computer Interaction}: Developers of intelligent systems seek to create more empathetic and responsive interfaces that adapt to users' emotional states.
+\end{itemize}
+
+Despite the availability of machine learning models for emotion recognition, deploying these capabilities in a practical, accessible manner remains challenging. Many existing solutions require specialized technical knowledge, are limited to single-image analysis, or lack user-friendly interfaces for visualizing results over time. This creates a gap between the theoretical capabilities of emotion recognition technology and its practical application by non-technical users.
+
+%----------------------------------------------------------------------------
+\section{Objectives and Scope}
+\label{sec:objectives}
+%----------------------------------------------------------------------------
+
+The primary objective of this thesis is to design and implement a web-based application that enables users to analyze facial emotions in video content without requiring specialized technical expertise. The system should provide:
+
+\begin{enumerate}
+    \item \textbf{Accessible Video Upload}: A simple, intuitive interface for uploading video files in common formats (MP4, AVI, MOV, WebM).
+
+    \item \textbf{Automated Processing}: Background processing of uploaded videos using face detection and emotion recognition algorithms, with real-time progress feedback.
+
+    \item \textbf{Temporal Analysis}: Recognition of seven emotional states (happiness, sadness, anger, fear, disgust, surprise, and neutral) across the duration of a video, capturing how emotions evolve over time.
+
+    \item \textbf{Interactive Visualization}: A synchronized display of video playback alongside emotion timeline charts, allowing users to explore the relationship between video content and detected emotions.
+
+    \item \textbf{Data Export}: The ability to download analysis results in both JSON and CSV formats for further analysis or integration with other tools.
+\end{enumerate}
+
+The scope of this project encompasses the full-stack development of a web application, including a React-based frontend, a FastAPI backend with asynchronous task processing, and integration of pre-trained machine learning models for face detection and emotion recognition.
+
+%----------------------------------------------------------------------------
+\section{Technical Approach}
+\label{sec:approach}
+%----------------------------------------------------------------------------
+
+The solution employs a modern three-tier architecture consisting of a web frontend, a REST API backend, and an asynchronous processing pipeline. The key technical components include:
+
+\begin{itemize}
+    \item \textbf{Frontend}: A React application built with TypeScript, utilizing Tailwind CSS for styling and Recharts for data visualization. React Query manages server state and API interactions.
+
+    \item \textbf{Backend}: A FastAPI application providing RESTful endpoints for video upload, job management, and results retrieval. SQLite serves as the database for job tracking.
+
+    \item \textbf{Task Queue}: Celery with Redis handles asynchronous video processing, allowing the system to handle long-running analysis tasks without blocking the API.
+
+    \item \textbf{Face Detection}: Google's MediaPipe framework provides efficient, real-time face detection using the BlazeFace model architecture.
+
+    \item \textbf{Emotion Recognition}: The FER (Facial Expression Recognition) library, built on TensorFlow, classifies detected faces into seven emotional categories.
+
+    \item \textbf{Temporal Processing}: Custom algorithms for frame sampling and temporal smoothing ensure stable, meaningful emotion readings across video frames.
+\end{itemize}
+
+This architecture enables the system to handle videos of significant length (up to 10 minutes) and size (up to 500 MB) while providing responsive feedback to users during processing.
+
+%----------------------------------------------------------------------------
+\section{Thesis Structure}
+\label{sec:structure}
+%----------------------------------------------------------------------------
+
+The remainder of this thesis is organized as follows:
+
+\textbf{Chapter~\ref{chap:user-documentation}: User Documentation} provides comprehensive guidance for end users of the application. It describes the system requirements, installation procedures, and step-by-step instructions for using all features of the application, including video upload, result visualization, and data export.
+
+\textbf{Chapter~\ref{chap:developer-documentation}: Developer Documentation} presents the technical design and implementation of the system. This chapter covers the system architecture, database design, API specification, machine learning pipeline, frontend component structure, and testing methodology. It serves as a reference for developers who may need to maintain, extend, or adapt the application.
+
+Each chapter is designed to stand independently while contributing to a complete picture of the system's capabilities and implementation.

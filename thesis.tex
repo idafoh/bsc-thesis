@@ -1,0 +1,210 @@
+\documentclass[
+	%parspace, % Add vertical space between paragraphs
+	%noindent, % No indentation of first lines in each paragraph
+	%nohyp, % No hyphenation of words
+	%twoside, % Double sided format
+	%draft, % Quicker draft compilation without rendering images
+	%final, % Set final to hide todos
+]{elteikthesis}[2024/04/26]
+
+% The minted package is also supported for source highlighting
+% See elteikthesis_minted.tex for example
+%\usepackage[newfloat]{minted}
+
+% Document's metadata
+\title{Web-Based Facial Emotion Detection System Using Deep Learning} % title
+\date{2026} % year of defense
+
+% Author's metadata
+\author{Abat Dauletbaev}
+\degree{Computer Science BSc}
+
+% Supervisor(s)' metadata
+\supervisor{Papp-Bálint Gergő} % internal supervisor's name
+\affiliation{PhD Student, Dept. of Artificial Intelligence} % internal supervisor's affiliation
+%\extsupervisor{Jane Doe} % external supervisor's name
+%\extaffiliation{Senior Developer} % external supervisor's affiliation
+
+% University's metadata
+\university{Eötvös Loránd University} % university's name
+\faculty{Faculty of Informatics} % faculty's name
+\department{Dept. of Artificial Intelligence} % department's name
+\city{Budapest} % city
+\logo{elte_cimer_szines} % logo
+
+% Add bibliography file
+\addbibresource{bibliography.bib}
+
+% Custom title page with centered author
+\renewcommand{\maketitle}{
+	\begin{titlepage}
+		\begin{center}
+			\begin{tabular}{ c c }
+				\multirow{4}{*}{\hspace{-1.0cm}\includegraphics[width=0.25\textwidth]{elte_cimer_szines}}
+				& {\sc \Large \makecell{Eötvös Loránd University}} \vspace{0.3cm}\\
+				& {\sc \Large \makecell{Faculty of Informatics}} \vspace{0.5cm}\\
+				& {\sc \large \makecell{Dept. of Artificial Intelligence}}
+			\end{tabular}
+
+			\vspace{5.0cm}
+			{\bf \LARGE Web-Based Facial Emotion Detection System Using Deep Learning \par}
+			\vspace{3.0cm}
+
+			{\it \large Author:}\\
+			{\large Abat Dauletbaev}\\
+			Computer Science BSc\\
+			\vspace{2.0cm}
+
+			{\it \large Supervisor:}\\
+			{\large Papp-Bálint Gergő}\\
+			PhD Student, Dept. of Artificial Intelligence\\
+
+			\vfill
+			{\it Budapest, 2026}
+		\end{center}
+	\end{titlepage}
+}
+
+% Additional packages for code listings and diagrams
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Define colors for code listings
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Code listing style
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+% Python language definition
+\lstdefinelanguage{Python}{
+    keywords={def, class, return, if, elif, else, for, while, try, except, finally, with, as, import, from, True, False, None, and, or, not, in, is, lambda, yield, async, await},
+    keywordstyle=\color{blue}\bfseries,
+    ndkeywords={self, str, int, float, bool, list, dict, tuple, set},
+    ndkeywordstyle=\color{teal}\bfseries,
+    identifierstyle=\color{black},
+    sensitive=true,
+    comment=[l]{\#},
+    morecomment=[s]{'''}{'''},
+    morecomment=[s]{"""}{"""},
+    commentstyle=\color{codegreen}\ttfamily,
+    stringstyle=\color{codepurple}\ttfamily,
+    morestring=[b]',
+    morestring=[b]"
+}
+
+% TypeScript/JavaScript language definition
+\lstdefinelanguage{TypeScript}{
+    keywords={const, let, var, function, return, if, else, for, while, class, interface, type, export, import, from, default, async, await, try, catch, finally, new, this, extends, implements, typeof, instanceof, true, false, null, undefined},
+    keywordstyle=\color{blue}\bfseries,
+    ndkeywords={string, number, boolean, void, any, never, unknown, object, Array, Promise, Record},
+    ndkeywordstyle=\color{teal}\bfseries,
+    identifierstyle=\color{black},
+    sensitive=true,
+    comment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    commentstyle=\color{codegreen}\ttfamily,
+    stringstyle=\color{codepurple}\ttfamily,
+    morestring=[b]',
+    morestring=[b]",
+    morestring=[b]`
+}
+
+% The document
+\begin{document}
+
+% Set document language
+%\documentlang{hungarian}
+\documentlang{english}
+
+% List of todos (not in the final document)
+%\listoftodos[\todolabel]
+
+% Title page (mandatory)
+\maketitle
+% Topic declaration page (mandatory) - can also be attached instead
+%\includepdf{topicdeclaration.pdf}
+
+% Table of contents (mandatory)
+\tableofcontents
+\cleardoublepage
+
+% Main content
+\input{chapters/introduction.tex}
+\cleardoublepage
+
+\input{chapters/user_documentation.tex}
+\cleardoublepage
+
+\input{chapters/developer_documentation.tex}
+\cleardoublepage
+
+% Acknowledgements (optional) - in case your thesis received funding or would like to express special thanks to someone
+\chapter*{\acklabel}
+\addcontentsline{toc}{chapter}{\acklabel}
+I would like to express my sincere gratitude to my supervisor, Papp-Bálint Gergő, for his guidance and support throughout this thesis project. His expertise in artificial intelligence and valuable feedback helped shape the direction of this work.
+
+I am also grateful to the Faculty of Informatics at Eötvös Loránd University for providing the educational foundation and resources necessary to complete this project.
+
+Finally, I would like to thank my family and friends for their encouragement and patience during the development of this thesis.
+
+% Appendices (optional) - useful for detailed information in long tables, many and/or large figures, etc.
+%\appendix
+%\input{chapters/appendix.tex}
+%\cleardoublepage
+
+% Bibliography (mandatory)
+\phantomsection
+\addcontentsline{toc}{chapter}{\biblabel}
+\printbibliography[title=\biblabel]
+\cleardoublepage
+
+% List of figures (optional) - useful over 3-5 figures
+\phantomsection
+\addcontentsline{toc}{chapter}{\lstfigurelabel}
+\listoffigures
+\cleardoublepage
+
+% List of tables (optional) - useful over 3-5 tables
+\phantomsection
+\addcontentsline{toc}{chapter}{\lsttablelabel}
+\listoftables
+\cleardoublepage
+
+% List of algorithms (optional) - useful over 3-5 algorithms
+%\phantomsection
+%\addcontentsline{toc}{chapter}{\lstalgorithmlabel}
+%\listofalgorithms
+%\cleardoublepage
+
+% List of codes (optional) - useful over 3-5 code samples
+\phantomsection
+\addcontentsline{toc}{chapter}{\lstcodelabel}
+\lstlistoflistings
+\cleardoublepage
+
+% List of symbols (optional)
+%\printnomenclature
+
+\end{document}

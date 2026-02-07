@@ -1,0 +1,581 @@
+%----------------------------------------------------------------------------
+\chapter{User Documentation}
+\label{chap:user-documentation}
+%----------------------------------------------------------------------------
+
+This chapter provides comprehensive guidance for end users of the Emotion Detection application. It covers the purpose of the software, system requirements, installation procedures, and detailed instructions for using all features of the application.
+
+%----------------------------------------------------------------------------
+\section{Problem Statement}
+\label{sec:problem-statement}
+%----------------------------------------------------------------------------
+
+The Emotion Detection application is a web-based tool designed to analyze facial expressions in video content and detect emotional states over time. The software processes uploaded video files to identify faces and classify the emotions displayed by individuals in each frame of the video.
+
+\subsection{What the Software Does}
+
+The application performs the following key functions:
+
+\begin{itemize}
+    \item \textbf{Video Upload}: Accepts video files in common formats (MP4, AVI, MOV, WebM) up to 500 MB in size.
+
+    \item \textbf{Face Detection}: Automatically detects and tracks faces throughout the video using machine learning models.
+
+    \item \textbf{Emotion Classification}: Analyzes detected faces and classifies them into seven emotional categories:
+    \begin{itemize}
+        \item Happiness
+        \item Sadness
+        \item Anger
+        \item Fear
+        \item Disgust
+        \item Surprise
+        \item Neutral
+    \end{itemize}
+
+    \item \textbf{Temporal Analysis}: Produces a timeline of emotional states showing how emotions evolve throughout the duration of the video.
+
+    \item \textbf{Interactive Visualization}: Displays results through interactive charts synchronized with video playback.
+
+    \item \textbf{Data Export}: Allows users to download analysis results in JSON or CSV format for further analysis.
+\end{itemize}
+
+\subsection{Target Audience}
+
+The application is designed for:
+
+\begin{itemize}
+    \item \textbf{UX Researchers}: Professionals analyzing user reactions to products, interfaces, or advertisements to understand emotional engagement.
+
+    \item \textbf{Educators}: Teachers and educational researchers studying student engagement and emotional responses during learning activities.
+
+    \item \textbf{Content Creators}: Video producers and marketers who want to analyze emotional impact of their content.
+
+    \item \textbf{Researchers}: Academic researchers in psychology, human-computer interaction, or affective computing who need to analyze emotional expressions in video data.
+
+    \item \textbf{Healthcare Professionals}: Mental health practitioners who may benefit from objective tools to help understand emotional patterns.
+\end{itemize}
+
+%----------------------------------------------------------------------------
+\section{System Requirements}
+\label{sec:system-requirements}
+%----------------------------------------------------------------------------
+
+\subsection{Hardware Requirements}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Component} & \textbf{Minimum} & \textbf{Recommended} \\
+\hline
+CPU & Dual-core 2.0 GHz & Quad-core 2.5 GHz or higher \\
+\hline
+RAM & 4 GB & 8 GB or more \\
+\hline
+Storage & 2 GB free space & 10 GB free space \\
+\hline
+Network & Broadband internet & Broadband internet \\
+\hline
+\end{tabular}
+\caption{Hardware requirements for the Emotion Detection application}
+\label{tab:hardware-requirements}
+\end{table}
+
+Note: Processing large videos requires more RAM and storage space. The recommended configuration provides a smoother experience, especially for longer videos.
+
+\subsection{Software Requirements}
+
+\textbf{For Docker-based installation (recommended):}
+\begin{itemize}
+    \item Docker Desktop 4.0 or higher
+    \item Docker Compose 2.0 or higher
+    \item Modern web browser (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
+\end{itemize}
+
+\textbf{For manual installation:}
+\begin{itemize}
+    \item Python 3.11 or higher
+    \item Node.js 18.0 or higher
+    \item npm 9.0 or higher
+    \item Redis 7.0 or higher
+    \item Modern web browser (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
+\end{itemize}
+
+\subsection{Supported Video Formats}
+
+The application supports the following video formats:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Format} & \textbf{Extension} & \textbf{MIME Type} \\
+\hline
+MPEG-4 & .mp4 & video/mp4 \\
+\hline
+AVI & .avi & video/x-msvideo \\
+\hline
+QuickTime & .mov & video/quicktime \\
+\hline
+WebM & .webm & video/webm \\
+\hline
+\end{tabular}
+\caption{Supported video formats}
+\label{tab:video-formats}
+\end{table}
+
+\textbf{Video limitations:}
+\begin{itemize}
+    \item Maximum file size: 500 MB
+    \item Maximum duration: 10 minutes
+\end{itemize}
+
+%----------------------------------------------------------------------------
+\section{Installation Guide}
+\label{sec:installation-guide}
+%----------------------------------------------------------------------------
+
+This section provides step-by-step instructions for installing and running the Emotion Detection application. Two installation methods are available: Docker-based installation (recommended) and manual installation.
+
+\subsection{Docker-Based Installation (Recommended)}
+
+Docker provides a containerized environment that simplifies installation and ensures consistent behavior across different operating systems.
+
+\subsubsection{Prerequisites}
+
+\begin{enumerate}
+    \item Install Docker Desktop from \url{https://www.docker.com/products/docker-desktop}
+    \item Ensure Docker Desktop is running
+    \item Verify installation by opening a terminal and running:
+\begin{lstlisting}[language=bash, caption={Verify Docker installation}]
+docker --version
+docker-compose --version
+\end{lstlisting}
+\end{enumerate}
+
+\subsubsection{Installation Steps}
+
+\begin{enumerate}
+    \item Download or clone the application source code:
+\begin{lstlisting}[language=bash, caption={Clone the repository}]
+git clone https://github.com/your-repo/emotion-detection.git
+cd emotion-detection
+\end{lstlisting}
+
+    \item Build and start all services using Docker Compose:
+\begin{lstlisting}[language=bash, caption={Start the application with Docker Compose}]
+docker-compose up --build
+\end{lstlisting}
+
+    \item Wait for all services to start. You will see log messages indicating each service is ready:
+    \begin{itemize}
+        \item Redis: ``Ready to accept connections''
+        \item Backend: ``Uvicorn running on http://0.0.0.0:8000''
+        \item Celery: ``celery@worker ready''
+        \item Frontend: ``VITE ready''
+    \end{itemize}
+
+    \item Open your web browser and navigate to \url{http://localhost:3000}
+\end{enumerate}
+
+\subsubsection{Stopping the Application}
+
+To stop all services, press \texttt{Ctrl+C} in the terminal where Docker Compose is running, or run:
+\begin{lstlisting}[language=bash, caption={Stop Docker containers}]
+docker-compose down
+\end{lstlisting}
+
+\subsection{Manual Installation}
+
+Manual installation provides more control over the environment and is suitable for development or when Docker is not available.
+
+\subsubsection{Backend Setup}
+
+\begin{enumerate}
+    \item Navigate to the backend directory:
+\begin{lstlisting}[language=bash, caption={Navigate to backend}]
+cd backend
+\end{lstlisting}
+
+    \item Create and activate a Python virtual environment:
+\begin{lstlisting}[language=bash, caption={Create virtual environment}]
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+\end{lstlisting}
+
+    \item Install Python dependencies:
+\begin{lstlisting}[language=bash, caption={Install Python dependencies}]
+pip install -r requirements.txt
+\end{lstlisting}
+
+    \item Copy the environment configuration file:
+\begin{lstlisting}[language=bash, caption={Copy environment file}]
+cp .env.example .env
+\end{lstlisting}
+
+    \item Install and start Redis:
+\begin{lstlisting}[language=bash, caption={Start Redis (macOS with Homebrew)}]
+# macOS with Homebrew
+brew install redis
+brew services start redis
+
+# Or using Docker
+docker run -d -p 6379:6379 redis:alpine
+\end{lstlisting}
+
+    \item Start the Celery worker (in a new terminal):
+\begin{lstlisting}[language=bash, caption={Start Celery worker}]
+cd backend
+source venv/bin/activate
+celery -A app.core.celery_app worker --loglevel=info
+\end{lstlisting}
+
+    \item Start the FastAPI backend server (in another terminal):
+\begin{lstlisting}[language=bash, caption={Start FastAPI server}]
+cd backend
+source venv/bin/activate
+uvicorn main:app --reload --port 8000
+\end{lstlisting}
+\end{enumerate}
+
+\subsubsection{Frontend Setup}
+
+\begin{enumerate}
+    \item Open a new terminal and navigate to the frontend directory:
+\begin{lstlisting}[language=bash, caption={Navigate to frontend}]
+cd frontend
+\end{lstlisting}
+
+    \item Install Node.js dependencies:
+\begin{lstlisting}[language=bash, caption={Install npm dependencies}]
+npm install
+\end{lstlisting}
+
+    \item Start the development server:
+\begin{lstlisting}[language=bash, caption={Start frontend development server}]
+npm run dev
+\end{lstlisting}
+
+    \item Open your web browser and navigate to \url{http://localhost:3000}
+\end{enumerate}
+
+\subsection{Environment Configuration}
+
+The application can be configured using environment variables. The following table describes available configuration options:
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|l|p{6cm}|l|}
+\hline
+\textbf{Variable} & \textbf{Description} & \textbf{Default} \\
+\hline
+DEBUG & Enable debug mode & True \\
+\hline
+REDIS\_URL & Redis connection URL & redis://localhost:6379/0 \\
+\hline
+DATABASE\_URL & Database connection URL & sqlite+aiosqlite:///./emotion\_detection.db \\
+\hline
+MAX\_VIDEO\_SIZE\_MB & Maximum upload file size in MB & 500 \\
+\hline
+MAX\_VIDEO\_DURATION\_SECONDS & Maximum video duration in seconds & 600 \\
+\hline
+FRAME\_SAMPLE\_RATE & Process every Nth frame & 5 \\
+\hline
+SMOOTHING\_WINDOW\_SIZE & Temporal smoothing window size & 5 \\
+\hline
+\end{tabular}
+\caption{Environment configuration variables}
+\label{tab:env-config}
+\end{table}
+
+%----------------------------------------------------------------------------
+\section{User Guide}
+\label{sec:user-guide}
+%----------------------------------------------------------------------------
+
+This section describes how to use the Emotion Detection application to analyze videos and interpret the results.
+
+\subsection{Application Overview}
+
+The application consists of two main pages:
+
+\begin{enumerate}
+    \item \textbf{Home Page}: The main entry point where users upload videos and monitor processing status.
+    \item \textbf{Results Page}: Displays the analysis results with interactive visualizations.
+\end{enumerate}
+
+\subsection{Uploading a Video}
+
+To analyze a video, follow these steps:
+
+\begin{enumerate}
+    \item Open the application in your web browser at \url{http://localhost:3000}
+
+    \item On the home page, you will see the video upload area in the center of the screen. You can upload a video in two ways:
+    \begin{itemize}
+        \item \textbf{Drag and Drop}: Drag a video file from your file explorer and drop it onto the upload area.
+        \item \textbf{File Browser}: Click on the upload area to open a file browser dialog, then select your video file.
+    \end{itemize}
+
+    \item Once a file is selected, the upload begins automatically. A progress indicator shows the upload percentage.
+
+    \item After the upload completes, the video is queued for processing. The status indicator changes to ``Pending'' while waiting for processing to begin.
+\end{enumerate}
+
+\subsection{Monitoring Processing Status}
+
+Once a video is uploaded, the processing status panel appears showing:
+
+\begin{itemize}
+    \item \textbf{Status Badge}: Indicates the current state of processing:
+    \begin{itemize}
+        \item \textit{Pending} (yellow): Video is waiting in the processing queue
+        \item \textit{Processing} (blue): Video is being analyzed
+        \item \textit{Completed} (green): Analysis is finished
+        \item \textit{Failed} (red): An error occurred during processing
+    \end{itemize}
+
+    \item \textbf{File Name}: The name of the uploaded video file.
+
+    \item \textbf{Progress Bar}: When processing, shows the percentage of video frames that have been analyzed.
+
+    \item \textbf{Timestamps}: Shows when the job was created and completed.
+\end{itemize}
+
+When processing completes successfully, the application automatically navigates to the results page.
+
+\subsection{Viewing Analysis Results}
+
+The results page provides a comprehensive view of the emotion analysis:
+
+\subsubsection{Video Player}
+
+The video player allows you to watch the original video. Controls include:
+\begin{itemize}
+    \item Play/Pause button
+    \item Progress bar for seeking
+    \item Volume control
+    \item Fullscreen toggle
+\end{itemize}
+
+The video player is synchronized with the emotion timeline---as you watch the video, a vertical indicator on the timeline moves to show the current position.
+
+\subsubsection{Emotion Timeline}
+
+The emotion timeline is an interactive line chart showing how each emotion's confidence score changes over time. Features include:
+
+\begin{itemize}
+    \item \textbf{Seven Emotion Lines}: Each emotion is represented by a different colored line:
+    \begin{itemize}
+        \item Happiness: Gold (\#FFD700)
+        \item Sadness: Blue (\#4169E1)
+        \item Anger: Crimson (\#DC143C)
+        \item Fear: Purple (\#8B008B)
+        \item Disgust: Forest Green (\#228B22)
+        \item Surprise: Orange (\#FF8C00)
+        \item Neutral: Gray (\#808080)
+    \end{itemize}
+
+    \item \textbf{Time Axis}: The horizontal axis shows time in seconds from the start of the video.
+
+    \item \textbf{Confidence Axis}: The vertical axis shows confidence scores as percentages (0\% to 100\%).
+
+    \item \textbf{Interactive Tooltips}: Hovering over any point shows the exact values for all emotions at that timestamp.
+
+    \item \textbf{Click to Seek}: Clicking on any point in the timeline jumps the video to that timestamp.
+
+    \item \textbf{Legend}: A legend at the top allows you to identify which line represents which emotion.
+\end{itemize}
+
+\subsubsection{Emotion Summary}
+
+The summary panel provides aggregate statistics for the entire video:
+
+\begin{itemize}
+    \item \textbf{Dominant Emotion}: The emotion with the highest average confidence across the video.
+    \item \textbf{Average Scores}: Bar chart showing the average confidence score for each emotion.
+    \item \textbf{Video Metadata}: Information about the video including duration, frame rate, and total frames analyzed.
+\end{itemize}
+
+\subsubsection{Emotion Distribution Pie Chart}
+
+The pie chart visualizes the relative proportion of each emotion throughout the video, making it easy to see at a glance which emotions were most prevalent.
+
+\subsubsection{Adaptive Layout}
+
+The results page automatically adapts its layout based on the video orientation:
+
+\begin{itemize}
+    \item \textbf{Landscape Videos}: Video displayed at the top with the timeline below.
+    \item \textbf{Portrait Videos}: Video and timeline displayed side by side to make better use of screen space.
+\end{itemize}
+
+\subsection{Exporting Results}
+
+The application allows you to export analysis results in two formats:
+
+\subsubsection{JSON Export}
+
+The JSON export contains the complete analysis data including:
+\begin{itemize}
+    \item Video metadata (filename, duration, frame rate)
+    \item Frame-by-frame analysis results
+    \item Summary statistics
+    \item Timeline data for visualization
+\end{itemize}
+
+\subsubsection{CSV Export}
+
+The CSV export contains tabular data suitable for spreadsheet applications or further statistical analysis. Each row represents one analyzed frame with columns for:
+\begin{itemize}
+    \item Frame number
+    \item Timestamp (in seconds)
+    \item Face detected (true/false)
+    \item Dominant emotion
+    \item Confidence score
+    \item Individual scores for all seven emotions
+\end{itemize}
+
+To export results:
+\begin{enumerate}
+    \item On the results page, locate the export buttons in the top-right corner.
+    \item Click ``Export CSV'' or ``Export JSON'' as desired.
+    \item The file will be downloaded automatically with the name \texttt{emotion\_analysis\_[job\_id].[format]}.
+\end{enumerate}
+
+\subsection{Managing Analysis Jobs}
+
+The home page displays a list of recent analysis jobs in the ``Recent Analysis'' section. For each job, you can see:
+
+\begin{itemize}
+    \item File name
+    \item Processing status (with progress percentage if currently processing)
+    \item Date and time of creation
+    \item Action buttons
+\end{itemize}
+
+\subsubsection{Viewing Previous Results}
+
+To view results from a previously completed analysis, click ``View Results'' next to the completed job in the recent jobs list.
+
+\subsubsection{Deleting Jobs}
+
+To delete an analysis job and its associated data:
+
+\begin{enumerate}
+    \item Click the trash icon next to the job you want to delete.
+    \item A confirmation dialog will appear warning that this action is permanent.
+    \item Click ``Delete'' to confirm or ``Cancel'' to abort.
+\end{enumerate}
+
+Note: Deleting a job permanently removes both the analysis results and the uploaded video file. This action cannot be undone.
+
+%----------------------------------------------------------------------------
+\section{Error Messages and Troubleshooting}
+\label{sec:troubleshooting}
+%----------------------------------------------------------------------------
+
+This section describes common error messages and their solutions.
+
+\subsection{Upload Errors}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|p{4cm}|p{4cm}|p{4.5cm}|}
+\hline
+\textbf{Error Message} & \textbf{Cause} & \textbf{Solution} \\
+\hline
+``Invalid file type'' & File extension is not supported & Use MP4, AVI, MOV, or WebM format \\
+\hline
+``File too large'' & File exceeds 500 MB limit & Compress the video or split into shorter segments \\
+\hline
+``Upload failed'' & Network error during upload & Check internet connection and try again \\
+\hline
+``No filename provided'' & File selection failed & Try selecting the file again \\
+\hline
+\end{tabular}
+\caption{Upload error messages}
+\label{tab:upload-errors}
+\end{table}
+
+\subsection{Processing Errors}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|p{4cm}|p{4cm}|p{4.5cm}|}
+\hline
+\textbf{Error Message} & \textbf{Cause} & \textbf{Solution} \\
+\hline
+``Video file not found'' & File was moved or deleted during processing & Re-upload the video \\
+\hline
+``Cannot open video file'' & Corrupted or unsupported video codec & Convert to a standard format (H.264/MP4) \\
+\hline
+``Job failed'' & General processing error & Check error details and re-upload \\
+\hline
+\end{tabular}
+\caption{Processing error messages}
+\label{tab:processing-errors}
+\end{table}
+
+\subsection{Results Errors}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|p{4cm}|p{4cm}|p{4.5cm}|}
+\hline
+\textbf{Error Message} & \textbf{Cause} & \textbf{Solution} \\
+\hline
+``Results not found'' & Job ID is invalid or results were deleted & Navigate to home page and select a valid job \\
+\hline
+``Job is not completed'' & Trying to view results before processing finished & Wait for processing to complete \\
+\hline
+\end{tabular}
+\caption{Results error messages}
+\label{tab:results-errors}
+\end{table}
+
+\subsection{General Troubleshooting}
+
+\begin{enumerate}
+    \item \textbf{Application not loading}:
+    \begin{itemize}
+        \item Ensure all services are running (frontend, backend, Redis, Celery)
+        \item Check that ports 3000 and 8000 are not in use by other applications
+        \item Clear browser cache and reload the page
+    \end{itemize}
+
+    \item \textbf{Processing stuck at 0\%}:
+    \begin{itemize}
+        \item Verify that the Celery worker is running
+        \item Check that Redis is accessible
+        \item Review Celery worker logs for error messages
+    \end{itemize}
+
+    \item \textbf{No faces detected}:
+    \begin{itemize}
+        \item Ensure the video contains visible faces
+        \item Faces should be reasonably sized and not heavily occluded
+        \item Good lighting improves detection accuracy
+    \end{itemize}
+
+    \item \textbf{Video not playing in results}:
+    \begin{itemize}
+        \item Ensure the video format is supported by your browser
+        \item Try using Chrome or Firefox for best compatibility
+        \item Check that the backend server is running
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Getting Help}
+
+If you encounter issues not covered in this documentation:
+
+\begin{enumerate}
+    \item Check the application logs for detailed error information
+    \item Consult the API documentation at \url{http://localhost:8000/docs}
+    \item Report issues through the project's issue tracker
+\end{enumerate}
