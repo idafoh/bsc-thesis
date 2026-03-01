@@ -3,7 +3,7 @@ from enum import Enum
 from sqlalchemy import String, Integer, DateTime, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.core.database import Base
+from app.core.base import Base
 
 
 class JobStatus(str, Enum):
