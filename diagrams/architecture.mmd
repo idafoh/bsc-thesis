@@ -1,0 +1,38 @@
+%%{init: {'theme': 'neutral'}}%%
+flowchart TB
+    subgraph Client["Client Layer"]
+        Browser["Web Browser"]
+    end
+
+    subgraph Frontend["Presentation Layer"]
+        React["React Frontend<br/>(TypeScript + Vite)"]
+    end
+
+    subgraph Backend["Application Layer"]
+        FastAPI["FastAPI Server<br/>(REST API)"]
+        Celery["Celery Worker<br/>(Async Tasks)"]
+    end
+
+    subgraph Data["Data Layer"]
+        SQLite["SQLite Database<br/>(Job Metadata)"]
+        Redis["Redis<br/>(Message Broker)"]
+        FileStorage["File Storage<br/>(Videos + Results)"]
+    end
+
+    subgraph ML["ML Pipeline"]
+        MediaPipe["MediaPipe<br/>(Face Detection)"]
+        FER["FER + TensorFlow<br/>(Emotion Recognition)"]
+        OpenCV["OpenCV<br/>(Video Processing)"]
+    end
+
+    Browser <-->|HTTP| React
+    React <-->|REST API| FastAPI
+    FastAPI <-->|Queue Tasks| Redis
+    FastAPI <-->|CRUD| SQLite
+    FastAPI <-->|Save/Load| FileStorage
+    Redis <-->|Consume Tasks| Celery
+    Celery -->|Process Video| OpenCV
+    OpenCV -->|Frames| MediaPipe
+    MediaPipe -->|Face ROI| FER
+    Celery <-->|Read/Write| FileStorage
+    Celery <-->|Update Status| SQLite

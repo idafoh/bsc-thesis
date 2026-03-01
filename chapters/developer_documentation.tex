@@ -12,6 +12,17 @@ This chapter provides comprehensive technical documentation for developers who n
 
 The Emotion Detection application follows a modern three-tier architecture that separates concerns between presentation, business logic, and data processing. This design enables scalability, maintainability, and independent development of each layer.
 
+\subsection{Use Cases}
+
+Figure~\ref{fig:use-case} presents the use case diagram showing the main interactions between users and the system.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/use_case}
+\caption{Use case diagram}
+\label{fig:use-case}
+\end{figure}
+
 \subsection{Architecture Overview}
 
 The system consists of four main components:
@@ -42,34 +53,27 @@ Figure~\ref{fig:architecture} illustrates the high-level interaction between sys
     \item When complete, frontend fetches and displays results
 \end{enumerate}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
-\fbox{\parbox{0.9\textwidth}{
-\centering
-\textbf{System Architecture Diagram}\\[1em]
-\begin{tabular}{ccc}
-\fbox{Browser} & $\longleftrightarrow$ & \fbox{React Frontend} \\
-& & $\updownarrow$ \\
-& & \fbox{FastAPI Backend} \\
-& & $\updownarrow$ \\
-& & \fbox{SQLite Database} \\
-& & $\updownarrow$ \\
-& & \fbox{Redis Message Broker} \\
-& & $\updownarrow$ \\
-& & \fbox{Celery Worker} \\
-& & $\updownarrow$ \\
-& & \fbox{ML Pipeline (MediaPipe + FER)} \\
-\end{tabular}
-}}
+\includegraphics[width=0.95\textwidth]{figures/architecture}
 \caption{High-level system architecture}
 \label{fig:architecture}
+\end{figure}
+
+Figure~\ref{fig:sequence} shows the detailed sequence of interactions during video upload and processing.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/sequence}
+\caption{Sequence diagram for video upload and processing}
+\label{fig:sequence}
 \end{figure}
 
 \subsection{Technology Stack}
 
 Table~\ref{tab:technology-stack} summarizes the technologies used in each layer of the application.
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \small
 \begin{tabular}{|l|l|p{6cm}|}
@@ -141,7 +145,7 @@ The application uses SQLite as its database, providing a lightweight, serverless
 
 The current version uses a single-table design centered on the Job entity, which tracks the lifecycle of video analysis tasks.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \fbox{\parbox{0.7\textwidth}{
 \centering
@@ -296,7 +300,7 @@ app.include_router(api_router, prefix="/api")
 
 The API is organized into three routers: videos, jobs, and results. Table~\ref{tab:api-endpoints} provides a complete reference.
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \small
 \begin{tabular}{|l|l|p{6cm}|}
@@ -444,6 +448,15 @@ The processing flow consists of the following stages:
     \item \textbf{Temporal Smoothing}: A sliding window average smooths predictions.
     \item \textbf{Result Aggregation}: Per-frame results are compiled with summary statistics.
 \end{enumerate}
+
+Figure~\ref{fig:ml-pipeline} illustrates the complete ML pipeline processing flow.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/ml_pipeline}
+\caption{Machine learning pipeline flowchart}
+\label{fig:ml-pipeline}
+\end{figure}
 
 \subsection{Face Detection}
 
@@ -630,6 +643,7 @@ def process_video(
         frame_number += 1
 
     cap.release()
+    duration = total_frames / fps
     summary = self._calculate_summary(frame_results, duration)
 
     return {
@@ -654,22 +668,14 @@ The frontend is a single-page application built with React 18 and TypeScript, pr
 
 The application follows a component-based architecture with clear separation between pages and reusable components:
 
-\begin{verbatim}
-App
-+-- Layout
-    +-- Header (navigation)
-    +-- Main Content
-        +-- HomePage
-        |   +-- VideoUpload
-        |   +-- JobStatus
-        |   +-- RecentJobs
-        +-- ResultsPage
-            +-- VideoPlayer
-            +-- EmotionTimeline
-            +-- EmotionSummary
-            +-- EmotionPieChart
-            +-- ExportButtons
-\end{verbatim}
+Figure~\ref{fig:component} provides a visual representation of the component architecture for both frontend and backend.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/component}
+\caption{Component diagram showing frontend and backend modules}
+\label{fig:component}
+\end{figure}
 
 \subsection{State Management}
 
@@ -896,6 +902,17 @@ return isPortrait ? (
 %----------------------------------------------------------------------------
 
 This section discusses key implementation decisions and patterns used throughout the application.
+
+\subsection{Class Diagram}
+
+Figure~\ref{fig:class-diagram} presents the class diagram showing the main data structures and their relationships in the application.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{figures/class_diagram}
+\caption{Class diagram showing main data structures}
+\label{fig:class-diagram}
+\end{figure}
 
 \subsection{Error Handling}
 
@@ -1125,7 +1142,7 @@ npm run test:coverage
 
 The test suite achieves the following coverage:
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \begin{tabular}{|l|c|c|}
 \hline
@@ -1152,4 +1169,60 @@ For production deployments, tests should be integrated into a CI/CD pipeline. Th
     \item Build Docker images
     \item Run integration tests
     \item Deploy to staging environment
+\end{enumerate}
+
+%----------------------------------------------------------------------------
+\section{Limitations and Future Work}
+\label{sec:limitations-future-work}
+%----------------------------------------------------------------------------
+
+This section discusses the current limitations of the system and potential directions for future development.
+
+\subsection{Current Limitations}
+
+The application has several limitations that users and developers should be aware of:
+
+\begin{enumerate}
+    \item \textbf{Single Face Analysis}: The system currently analyzes only the largest detected face in each frame. Videos with multiple subjects require separate processing or manual segmentation.
+
+    \item \textbf{Lighting Sensitivity}: Emotion recognition accuracy decreases in poor lighting conditions, extreme shadows, or overexposed footage. The face detection model performs best with frontal, well-lit faces.
+
+    \item \textbf{Occlusion Handling}: Faces partially obscured by objects, hands, or accessories (sunglasses, masks) may not be detected or may produce unreliable emotion predictions.
+
+    \item \textbf{Cultural Expression Variations}: While Ekman's basic emotions are considered universal, the intensity and manner of emotional expression vary across cultures. The pre-trained model may perform differently across diverse populations.
+
+    \item \textbf{Static Model}: The system uses pre-trained models without fine-tuning capabilities. Users cannot adapt the model to specific domains or improve accuracy for their particular use cases.
+
+    \item \textbf{Video Length Constraints}: The 10-minute video limit and 500 MB file size restriction may be insufficient for some use cases, such as analyzing full-length interviews or presentations.
+
+    \item \textbf{Real-time Processing}: The current architecture does not support real-time emotion detection from live video streams or webcam input.
+\end{enumerate}
+
+\subsection{Future Work}
+
+Several enhancements could improve the system's capabilities and applicability:
+
+\begin{enumerate}
+    \item \textbf{Multi-face Tracking}: Implement face tracking algorithms to analyze multiple individuals simultaneously, assigning unique identifiers to each person throughout the video.
+
+    \item \textbf{Real-time Analysis}: Add WebSocket support and streaming capabilities to enable live emotion detection from webcam feeds or RTSP streams.
+
+    \item \textbf{Model Improvements}:
+    \begin{itemize}
+        \item Integrate more recent transformer-based models for improved accuracy
+        \item Add support for facial action unit (AU) detection for more granular expression analysis
+        \item Implement model fine-tuning capabilities for domain-specific applications
+    \end{itemize}
+
+    \item \textbf{Additional Emotion Dimensions}: Extend beyond categorical emotions to include dimensional measures such as valence (positive/negative) and arousal (intensity) for richer emotional analysis.
+
+    \item \textbf{Audio Integration}: Incorporate speech emotion recognition to combine facial and vocal cues for more robust multimodal emotion detection.
+
+    \item \textbf{Batch Processing}: Add support for uploading and processing multiple videos in a single batch, with aggregated reporting across video sets.
+
+    \item \textbf{User Annotations}: Allow users to manually annotate or correct emotion labels, enabling the creation of labeled datasets for future model training.
+
+    \item \textbf{Cloud Deployment}: Provide deployment configurations for cloud platforms (AWS, GCP, Azure) with auto-scaling capabilities to handle varying workloads.
+
+    \item \textbf{Privacy Features}: Implement optional face blurring in exported videos and on-device processing options for privacy-sensitive applications.
 \end{enumerate}

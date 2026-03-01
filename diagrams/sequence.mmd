@@ -1,0 +1,50 @@
+%%{init: {'theme': 'neutral'}}%%
+sequenceDiagram
+    autonumber
+    participant U as User
+    participant F as React Frontend
+    participant A as FastAPI Backend
+    participant R as Redis
+    participant C as Celery Worker
+    participant DB as SQLite
+    participant FS as File Storage
+    participant ML as ML Pipeline
+
+    U->>F: Select video file
+    F->>A: POST /api/videos/upload
+    A->>FS: Save video file
+    A->>DB: Create job record (status: pending)
+    A->>R: Queue processing task
+    A-->>F: Return job_id
+    F-->>U: Show "Upload complete"
+
+    loop Poll every 2 seconds
+        F->>A: GET /api/jobs/{job_id}
+        A->>DB: Query job status
+        A-->>F: Return status + progress
+        F-->>U: Update progress bar
+    end
+
+    C->>R: Consume task
+    C->>DB: Update status: processing
+    C->>FS: Load video file
+    C->>ML: Process video frames
+
+    loop For each sampled frame
+        ML->>ML: Detect face (MediaPipe)
+        ML->>ML: Classify emotions (FER)
+        ML->>ML: Apply temporal smoothing
+        C->>DB: Update progress %
+    end
+
+    ML-->>C: Return analysis results
+    C->>FS: Save results.json
+    C->>DB: Update status: completed
+
+    F->>A: GET /api/jobs/{job_id}
+    A-->>F: Status: completed
+    F->>F: Navigate to results page
+    F->>A: GET /api/results/{job_id}
+    A->>FS: Load results.json
+    A-->>F: Return analysis data
+    F-->>U: Display charts & video

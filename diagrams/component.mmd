@@ -1,0 +1,71 @@
+%%{init: {'theme': 'neutral'}}%%
+flowchart TB
+    subgraph Frontend["Frontend (React + TypeScript)"]
+        subgraph Pages
+            HomePage
+            ResultsPage
+        end
+        subgraph Components
+            VideoUpload
+            JobStatus
+            RecentJobs
+            VideoPlayer
+            EmotionTimeline
+            EmotionSummary
+            EmotionPieChart
+            ExportButtons
+        end
+        subgraph Hooks
+            useJobPolling
+            useAnalysisResults
+        end
+        subgraph Services
+            APIClient["API Client (Axios)"]
+        end
+
+        HomePage --> VideoUpload
+        HomePage --> JobStatus
+        HomePage --> RecentJobs
+        ResultsPage --> VideoPlayer
+        ResultsPage --> EmotionTimeline
+        ResultsPage --> EmotionSummary
+        ResultsPage --> EmotionPieChart
+        ResultsPage --> ExportButtons
+
+        JobStatus --> useJobPolling
+        ResultsPage --> useAnalysisResults
+        useJobPolling --> APIClient
+        useAnalysisResults --> APIClient
+    end
+
+    subgraph Backend["Backend (FastAPI + Python)"]
+        subgraph API["API Routes"]
+            VideosRouter["/api/videos"]
+            JobsRouter["/api/jobs"]
+            ResultsRouter["/api/results"]
+        end
+        subgraph Core
+            Config
+            Database
+            CeleryApp
+        end
+        subgraph ServicesB["Services"]
+            Tasks["Celery Tasks"]
+        end
+        subgraph Pipeline
+            EmotionDetector
+        end
+        subgraph Models
+            JobModel["Job Model"]
+        end
+
+        VideosRouter --> Tasks
+        JobsRouter --> JobModel
+        ResultsRouter --> JobModel
+        Tasks --> EmotionDetector
+        Tasks --> JobModel
+        EmotionDetector --> MediaPipe["MediaPipe"]
+        EmotionDetector --> FER["FER Library"]
+    end
+
+    APIClient <-->|HTTP/REST| API

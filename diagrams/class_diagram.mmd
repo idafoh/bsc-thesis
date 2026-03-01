@@ -1,0 +1,77 @@
+%%{init: {'theme': 'neutral'}}%%
+classDiagram
+    class Job {
+        +String id
+        +String filename
+        +JobStatus status
+        +int progress
+        +String celery_task_id
+        +String error
+        +DateTime created_at
+        +DateTime completed_at
+    }
+
+    class JobStatus {
+        <<enumeration>>
+        PENDING
+        PROCESSING
+        COMPLETED
+        FAILED
+    }
+
+    class EmotionDetector {
+        -FaceDetection face_detector
+        -FER emotion_detector
+        -int frame_sample_rate
+        -int smoothing_window
+        -Dict emotion_buffers
+        +process_video(path, callback) Dict
+        -_detect_largest_face(frame) Tuple
+        -_analyze_emotions(frame) Dict
+        -_smooth_emotions(emotions) Dict
+        -_get_dominant_emotion(emotions) Tuple
+        -_calculate_summary(results, duration) Dict
+    }
+
+    class FrameResult {
+        +int frame_number
+        +float timestamp
+        +bool face_detected
+        +EmotionScores emotions
+        +String dominant_emotion
+        +float confidence
+    }
+
+    class EmotionScores {
+        +float happiness
+        +float sadness
+        +float anger
+        +float fear
+        +float disgust
+        +float surprise
+        +float neutral
+    }
+
+    class AnalysisResult {
+        +String job_id
+        +String video_filename
+        +int total_frames
+        +float fps
+        +float duration
+        +List~FrameResult~ frames
+        +Summary summary
+    }
+
+    class Summary {
+        +String dominant_emotion
+        +EmotionScores average_scores
+        +List emotion_timeline
+    }
+
+    Job --> JobStatus
+    EmotionDetector ..> FrameResult : creates
+    EmotionDetector ..> AnalysisResult : returns
+    FrameResult --> EmotionScores
+    AnalysisResult --> Summary
+    AnalysisResult *-- FrameResult
+    Summary --> EmotionScores

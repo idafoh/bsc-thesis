@@ -1,0 +1,22 @@
+%%{init: {'theme': 'neutral'}}%%
+flowchart LR
+    subgraph System["Emotion Detection System"]
+        UC1["Upload Video"]
+        UC2["Monitor Processing Status"]
+        UC3["View Analysis Results"]
+        UC4["Export Results (JSON/CSV)"]
+        UC5["Delete Analysis Job"]
+        UC6["View Recent Jobs"]
+    end
+
+    User((User))
+
+    User --> UC1
+    User --> UC2
+    User --> UC3
+    User --> UC4
+    User --> UC5
+    User --> UC6
+
+    UC1 -.->|includes| UC2
+    UC3 -.->|extends| UC4

@@ -1,0 +1,46 @@
+%%{init: {'theme': 'neutral'}}%%
+flowchart LR
+    subgraph Input["Input"]
+        A[Video File]
+    end
+
+    subgraph Preprocessing["Preprocessing"]
+        B[Open Video<br/>OpenCV]
+        C{Sample<br/>Frame?}
+    end
+
+    subgraph Detection["Face Detection"]
+        D[BGR → RGB]
+        E[MediaPipe<br/>Detection]
+        F{Face<br/>Found?}
+        G[Select Largest<br/>Face]
+        H[Crop with<br/>20% Padding]
+        I[Zero Scores]
+    end
+
+    subgraph Recognition["Emotion Recognition"]
+        J[FER Classifier]
+        K[7 Emotion<br/>Scores]
+    end
+
+    subgraph Smoothing["Temporal Smoothing"]
+        L[Sliding Window<br/>Buffer]
+        M[Moving Average]
+        N[Dominant<br/>Emotion]
+    end
+
+    subgraph Output["Output"]
+        O[Frame Result]
+        P{More<br/>Frames?}
+        Q[Summary<br/>Statistics]
+        R[Results JSON]
+    end
+
+    A --> B --> C
+    C -->|No| C
+    C -->|Yes| D --> E --> F
+    F -->|No| I --> L
+    F -->|Yes| G --> H --> J --> K --> L
+    L --> M --> N --> O --> P
+    P -->|Yes| C
+    P -->|No| Q --> R

@@ -48,7 +48,7 @@ The application is designed for:
 
     \item \textbf{Educators}: Teachers and educational researchers studying student engagement and emotional responses during learning activities.
 
-    \item \textbf{Content Creators}: Video producers and marketers who want to analyze emotional impact of their content.
+    \item \textbf{Content Creators}: Video producers and marketers who want to analyze the emotional impact of their content.
 
     \item \textbf{Researchers}: Academic researchers in psychology, human-computer interaction, or affective computing who need to analyze emotional expressions in video data.
 
@@ -62,7 +62,7 @@ The application is designed for:
 
 \subsection{Hardware Requirements}
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \begin{tabular}{|l|l|l|}
 \hline
@@ -105,7 +105,7 @@ Note: Processing large videos requires more RAM and storage space. The recommend
 
 The application supports the following video formats:
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \begin{tabular}{|l|l|l|}
 \hline
@@ -158,8 +158,8 @@ docker-compose --version
 \begin{enumerate}
     \item Download or clone the application source code:
 \begin{lstlisting}[language=bash, caption={Clone the repository}]
-git clone https://github.com/your-repo/emotion-detection.git
-cd emotion-detection
+git clone https://github.com/idafoh/bsc-thesis.git
+cd bsc-thesis
 \end{lstlisting}
 
     \item Build and start all services using Docker Compose:
@@ -263,10 +263,10 @@ npm run dev
 
 The application can be configured using environment variables. The following table describes available configuration options:
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
-\small
-\begin{tabular}{|l|p{6cm}|l|}
+\footnotesize
+\begin{tabularx}{\textwidth}{|l|X|l|}
 \hline
 \textbf{Variable} & \textbf{Description} & \textbf{Default} \\
 \hline
@@ -274,7 +274,7 @@ DEBUG & Enable debug mode & True \\
 \hline
 REDIS\_URL & Redis connection URL & redis://localhost:6379/0 \\
 \hline
-DATABASE\_URL & Database connection URL & sqlite+aiosqlite:///./emotion\_detection.db \\
+DATABASE\_URL & Database connection URL & (see below) \\
 \hline
 MAX\_VIDEO\_SIZE\_MB & Maximum upload file size in MB & 500 \\
 \hline
@@ -284,10 +284,12 @@ FRAME\_SAMPLE\_RATE & Process every Nth frame & 5 \\
 \hline
 SMOOTHING\_WINDOW\_SIZE & Temporal smoothing window size & 5 \\
 \hline
-\end{tabular}
+\end{tabularx}
 \caption{Environment configuration variables}
 \label{tab:env-config}
 \end{table}
+
+\noindent\textbf{Note:} The default value for \texttt{DATABASE\_URL} is \texttt{sqlite+aiosqlite:///./emotion\_detection.db}
 
 %----------------------------------------------------------------------------
 \section{User Guide}
@@ -359,7 +361,7 @@ The video player allows you to watch the original video. Controls include:
     \item Fullscreen toggle
 \end{itemize}
 
-The video player is synchronized with the emotion timeline---as you watch the video, a vertical indicator on the timeline moves to show the current position.
+The video player is synchronized with the emotion timeline. As you watch the video, a vertical indicator on the timeline moves to show the current position.
 
 \subsubsection{Emotion Timeline}
 
@@ -480,7 +482,7 @@ This section describes common error messages and their solutions.
 
 \subsection{Upload Errors}
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \small
 \begin{tabular}{|p{4cm}|p{4cm}|p{4.5cm}|}
@@ -502,7 +504,7 @@ This section describes common error messages and their solutions.
 
 \subsection{Processing Errors}
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \small
 \begin{tabular}{|p{4cm}|p{4cm}|p{4.5cm}|}
@@ -522,7 +524,7 @@ This section describes common error messages and their solutions.
 
 \subsection{Results Errors}
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \small
 \begin{tabular}{|p{4cm}|p{4cm}|p{4.5cm}|}
